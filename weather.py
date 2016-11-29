@@ -1,85 +1,52 @@
-import requests
-import json
+from api_endpoints import (CurrentCondition, TenDayForecast, SunRiseSunSet,
+                           WeatherAlert, Hurricane)
 
-# Current conditions at that location
+from menu import Menu
 
-
-class CurrentCondition:
-    def __init__(self, zipcode):
-        self.zipcode = zipcode
-        self.url = "http://api.wunderground.com/api/103c92d6094529b8/conditions/q/{}{}".format(self.zipcode, '.json')
-
-    def get_current_condition(self):
-        r = requests.get(self.url)
-        print(json.dumps(r.json(), indent=4))
+def quit():
+    exit()
 
 
-# cc = CurrentCondition(27713)
-# cc.get_current_condition()
-
-# 10 day forecast for that location
-
-
-class TenDayForecast:
-    def __init__(self, zipcode):
-        self.zipcode = zipcode
-        self.url = "http://api.wunderground.com/api/103c92d6094529b8/forecast10day/q/{}{}".format(self.zipcode, '.json')
-
-    def get_ten_day_forecast(self):
-        r = requests.get(self.url)
-        print(json.dumps(r.json(), indent=4))
-
-# td = TenDayForecast(27713)
-# td.get_ten_day_forecast()
-
-# Sunrise and sunset times
+def current_condition():
+    zip_code = input("Please Enter your zip code: ")
+    current_f = CurrentCondition(zip_code)
+    print(current_f.get_current_condition())
 
 
-class SunRiseSunSet:
-    def __init__(self, zipcode):
-        self.zipcode = zipcode
-        self.url = "http://api.wunderground.com/api/103c92d6094529b8/astronomy/q/{}{}".format(self.zipcode, '.json')
-
-    def get_sunrise_sunset(self):
-        r = requests.get(self.url)
-        print(json.dumps(r.json(), indent=4))
-        # results = r.json()
-        # sun_phase = results["sun_phase"]
-        # print("Sunrise = {}:{}\nSunset = {}:{}".format(
-        #     sun_phase["sunrise"]["hour"],
-        #     sun_phase["sunrise"]["minute"],
-        #     sun_phase["sunset"]["hour"],
-        #     sun_phase["sunset"]["minute"]))
-
-# sr = SunRiseSunSet(27713)
-# sr.get_sunrise_sunset()
+def ten_day_forecast():
+    zip_code = input("Please Enter your zip code: ")
+    ten_day_f = TenDayForecast(zip_code)
+    ten_day_f.get_ten_day_forecast()
 
 
-# Any current weather alerts
+def sunrise_sunset():
+    zip_code = input("Please Enter your zip code: ")
+    sun = SunRiseSunSet(zip_code)
+    sun_rise = sun.get_sunrise()
+    sun_set = sun.get_sunset()
+    print(sun_rise + "\n" + sun_set)
 
 
-class WeatherAlert:
-    def __init__(self, zipcode):
-        self.zipcode = zipcode
-        self.url = "http://api.wunderground.com/api/103c92d6094529b8/alerts/q/{}{}".format(self.zipcode, '.json')
-
-    def get_weather_alert(self):
-        r = requests.get(self.url)
-        print(json.dumps(r.json(), indent=4))
-
-# wa = WeatherAlert(27713)
-# wa.get_weather_alert()
-
-# A list of all active hurricanes (anywhere)
+def alert():
+    zip_code = input("Please Enter your zip code: ")
+    alert = WeatherAlert(zip_code)
+    print(alert.get_weather_alert())
 
 
-class Hurricane:
-    def __init__(self, zipcode):
-        self.zipcode = zipcode
-        self.url = "http://api.wunderground.com/api/103c92d6094529b8/currenthurricane/q/{}{}".format(self.zipcode, '.json')
+def hurricane_info():
+    zip_code = input("Please Enter your zip code: ")
+    hurricane_info = Hurricane(zip_code)
+    print(hurricane_info.get_hurricanes())
 
-    def get_hurricanes(self):
-        r = requests.get(self.url)
-        print(json.dumps(r.json(), indent=4))
 
-# if __name__ == "__main__":
+def main():
+    m = Menu("\t--Welcome to Weather Forecast--\n")
+    m.register("Get current forecast", current_condition)
+    m.register("Get ten day forecast", ten_day_forecast)
+    m.register("Get today's sunrise/sunset", sunrise_sunset)
+    m.register("Get weather alerts", alert)
+    m.register("Get hurricane information", hurricane_info)
+    m.register("Quit", quit)
+    m.display()
+
+main()

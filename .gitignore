@@ -2,3 +2,7 @@
 .direnv
 __pycache__
 .envrc
+current_condition.py
+sunrise_sunset.py
+ten_day.py
+weatheralerts.py
