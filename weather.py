@@ -3,6 +3,7 @@ from api_endpoints import (CurrentCondition, TenDayForecast, SunRiseSunSet,
 
 from menu import Menu
 
+
 def quit():
     exit()
 
