@@ -41,7 +41,7 @@ def hurricane_info():
 
 
 def main():
-    m = Menu("\t--Welcome to Weather Forecast--\n")
+    m = Menu("\t--Weather Forecast App--\n")
     m.register("Get current forecast", current_condition)
     m.register("Get ten day forecast", ten_day_forecast)
     m.register("Get today's sunrise/sunset", sunrise_sunset)

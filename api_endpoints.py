@@ -19,11 +19,6 @@ class CurrentCondition:
                         results.json()["current_observation"]["weather"],
                         results.json()["current_observation"]["relative_humidity"]))
 
-# cc = CurrentCondition(27713)
-# cc.get_current_condition()
-
-# 10 day forecast for that location
-
 
 class TenDayForecast:
     def __init__(self, zipcode):
@@ -37,13 +32,8 @@ class TenDayForecast:
             day = (key["title"], key["fcttext"])
             days_list.append(day)
         for day, forecast in days_list:
-            tenday_data = ("Day: {}\nForecast: {}\n".format(day, forecast))
+            tenday_data = ("Time: {}\nForecast: {}\n".format(day, forecast))
             print(tenday_data + "\n")
-
-# td = TenDayForecast(27713)
-# td.get_ten_day_forecast()
-
-# Sunrise and sunset times
 
 
 class SunRiseSunSet:
@@ -63,13 +53,6 @@ class SunRiseSunSet:
         return "Sunset: {}:{}pm\n".format(sun_times["sunset"]['hour'],
                                           sun_times["sunset"]['minute'])
 
-# sr = SunRiseSunSet(27713)
-# sr.get_sunrise()
-# sr.get_sunset()
-
-
-# Any current weather alerts
-
 
 class WeatherAlert:
     def __init__(self, zipcode):
@@ -84,15 +67,12 @@ class WeatherAlert:
                 .format(results.json()["alerts"][0]["type"],
                         results.json()["alerts"][0]["description"],
                         results.json()["alerts"][0]["expires"]))
-# wa = WeatherAlert(27713)
-# wa.get_weather_alert()
-
-# A list of all active hurricanes (anywhere)
 
 
 class Hurricane:
-    def __init__(self):
-        self.url = "http://api.wunderground.com/api/103c92d6094529b8/currenthurricane/view.json"
+    def __init__(self, zipcode):
+        self.zipcode = zipcode
+        self.url = "http://api.wunderground.com/api/103c92d6094529b8/currenthurricane/q/{}{}".format(self.zipcode, '.json')
 
     def get_hurricanes(self):
         results = requests.get(self.url)
@@ -103,9 +83,6 @@ class Hurricane:
                 results.json()["currenthurricane"][0]["Current"]["WindSpeed"]["Mph"],
                 results.json()["currenthurricane"][0]["Current"]["Movement"]["Text"])
                 )
-
-# gh = Hurricane()
-# gh.get_hurricanes()
 
 
 if __name__ == "__main__":
