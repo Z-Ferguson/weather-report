@@ -1,8 +1,6 @@
 import requests
 import json
 
-# Current conditions at that location
-
 
 class CurrentCondition:
     def __init__(self, zipcode):
@@ -44,14 +42,10 @@ class SunRiseSunSet:
     def get_sunrise(self):
         r = requests.get(self.url)
         sun_times = (r.json()["sun_phase"])
-        return "\nSunrise: {}:{}am".format(sun_times["sunrise"]['hour'],
-                                           sun_times["sunrise"]['minute'])
-
-    def get_sunset(self):
-        r = requests.get(self.url)
-        sun_times = (r.json()["sun_phase"])
-        return "Sunset: {}:{}pm\n".format(sun_times["sunset"]['hour'],
-                                          sun_times["sunset"]['minute'])
+        return "\nSunrise: {}:{}am,\n Sunset: {}:{}pm\n".format(sun_times["sunrise"]['hour'],
+                                                                sun_times["sunrise"]['minute'],
+                                                                sun_times["sunset"]['hour'],
+                                                                sun_times["sunset"]['minute'])
 
 
 class WeatherAlert:
@@ -62,7 +56,7 @@ class WeatherAlert:
     def get_weather_alert(self):
         results = requests.get(self.url)
         if len(results.json()["alerts"]) == 0:
-            return "No alerts for your area.\n"
+            return "No alerts, go outside you nerd\n"
         return ("Alert Type: {}\nDescription: {}\nExpires: {}\n"
                 .format(results.json()["alerts"][0]["type"],
                         results.json()["alerts"][0]["description"],
@@ -74,15 +68,18 @@ class Hurricane:
         self.zipcode = zipcode
         self.url = "http://api.wunderground.com/api/103c92d6094529b8/currenthurricane/q/{}{}".format(self.zipcode, '.json')
 
-    def get_hurricanes(self):
-        results = requests.get(self.url)
-        if results.json()["response"]["features"]["currenthurricane"] != 0:
+    def get_hurricane(self):
+            results = requests.get(self.url)
+            if len(results.json()["currenthurricane"]) == 0:
+                return "There are no Hurricanes currently.\n"
             return ("Name: {}\nCategory: {}\nWindspeed: {}\n".format(
-                results.json()["currenthurricane"][0]["stormInfo"]["stormName_Nice"],
+                results.json()["currenthurricane"][0]["stormInfo"]
+                ["stormName_Nice"],
                 results.json()["currenthurricane"][0]["Current"]["Category"],
-                results.json()["currenthurricane"][0]["Current"]["WindSpeed"]["Mph"],
-                results.json()["currenthurricane"][0]["Current"]["Movement"]["Text"])
-                )
+                results.json()["currenthurricane"][0]["Current"]["WindSpeed"]
+                ["Mph"],
+                results.json()["currenthurricane"][0]["Current"]["Movement"]
+                ["Text"]))
 
 
 if __name__ == "__main__":

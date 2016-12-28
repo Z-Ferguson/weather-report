@@ -27,7 +27,6 @@ class Menu:
 
 
 def test():
-    # New feature testing area
     pass
 
 

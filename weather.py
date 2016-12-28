@@ -24,8 +24,7 @@ def sunrise_sunset():
     zip_code = input("Please Enter your zip code: ")
     sun = SunRiseSunSet(zip_code)
     sun_rise = sun.get_sunrise()
-    sun_set = sun.get_sunset()
-    print(sun_rise + "\n" + sun_set)
+    print(sun_rise)
 
 
 def alert():
@@ -35,9 +34,9 @@ def alert():
 
 
 def hurricane_info():
-    zip_code = input("Please Enter your zip code: ")
-    hurricane_info = Hurricane(zip_code)
-    print(hurricane_info.get_hurricanes())
+    zipcode = input("Please Enter your zip code: ")
+    hurricane_info = Hurricane(zipcode)
+    print(hurricane_info.get_hurricane())
 
 
 def main():
@@ -46,7 +45,7 @@ def main():
     m.register("Get ten day forecast", ten_day_forecast)
     m.register("Get today's sunrise/sunset", sunrise_sunset)
     m.register("Get weather alerts", alert)
-    m.register("Get hurricane information", hurricane_info)
+    m.register("Get hurricanes", hurricane_info)
     m.register("Quit", quit)
     m.display()
 
